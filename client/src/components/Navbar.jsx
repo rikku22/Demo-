@@ -17,6 +17,13 @@ export const Navbar = () => {
   };
 
   const isActive = (path) => location.pathname === path;
+  const navItemStyle = (path) => ({
+    fontWeight: '600',
+    fontSize: '0.92rem',
+    color: isActive(path) ? 'var(--primary)' : 'var(--text-main)',
+    transition: 'color 0.2s ease',
+  });
+  const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
     <header style={{ backgroundColor: '#ffffff', borderBottom: '1px solid var(--border-color)', position: 'sticky', top: 0, zIndex: 100, boxShadow: 'var(--shadow-sm)' }}>
@@ -29,10 +36,10 @@ export const Navbar = () => {
           <div>
             <div style={{ fontSize: '1.4rem', fontWeight: '800', letterSpacing: '-0.02em', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '6px' }}>
               EVENT<span style={{ color: 'var(--primary)' }}>HUB</span>
-              <span className="badge badge-primary" style={{ fontSize: '0.65rem', padding: '2px 6px' }}>Tier 2/3</span>
+              <span className="badge badge-primary" style={{ fontSize: '0.65rem', padding: '2px 6px' }}>Smart Booking</span>
             </div>
             <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: '600', letterSpacing: '0.01em' }}>
-              Plan Smart. Spend Smart. Celebrate Better.
+              Plan. Compare. Celebrate Better.
             </div>
           </div>
         </Link>
@@ -42,9 +49,7 @@ export const Navbar = () => {
           <Link
             to="/planner"
             style={{
-              fontWeight: '600',
-              fontSize: '0.92rem',
-              color: isActive('/planner') ? 'var(--primary)' : 'var(--text-main)',
+              ...navItemStyle('/planner'),
               display: 'flex',
               alignItems: 'center',
               gap: '6px'
@@ -56,11 +61,7 @@ export const Navbar = () => {
 
           <Link
             to="/vendors"
-            style={{
-              fontWeight: '600',
-              fontSize: '0.92rem',
-              color: isActive('/vendors') ? 'var(--primary)' : 'var(--text-main)'
-            }}
+            style={navItemStyle('/vendors')}
           >
             Explore Vendors
           </Link>
@@ -68,9 +69,7 @@ export const Navbar = () => {
           <Link
             to="/compare"
             style={{
-              fontWeight: '600',
-              fontSize: '0.92rem',
-              color: isActive('/compare') ? 'var(--primary)' : 'var(--text-main)',
+              ...navItemStyle('/compare'),
               display: 'flex',
               alignItems: 'center',
               gap: '6px'
@@ -88,11 +87,7 @@ export const Navbar = () => {
           {isAuthenticated && (
             <Link
               to="/my-event"
-              style={{
-                fontWeight: '600',
-                fontSize: '0.92rem',
-                color: isActive('/my-event') ? 'var(--primary)' : 'var(--text-main)'
-              }}
+              style={navItemStyle('/my-event')}
             >
               My Event
             </Link>
@@ -140,31 +135,31 @@ export const Navbar = () => {
       {/* Mobile dropdown */}
       {mobileMenuOpen && (
         <div style={{ backgroundColor: '#fff', borderTop: '1px solid var(--border-color)', padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
-          <Link to="/planner" onClick={() => setMobileMenuOpen(false)} style={{ fontWeight: '600', padding: '8px 0', color: 'var(--primary)' }}>
+          <Link to="/planner" onClick={closeMobileMenu} style={{ fontWeight: '600', padding: '8px 0', color: 'var(--primary)' }}>
             ✨ Plan My Event
           </Link>
-          <Link to="/vendors" onClick={() => setMobileMenuOpen(false)} style={{ fontWeight: '600', padding: '8px 0' }}>
+          <Link to="/vendors" onClick={closeMobileMenu} style={{ fontWeight: '600', padding: '8px 0' }}>
             Explore Vendors
           </Link>
-          <Link to="/compare" onClick={() => setMobileMenuOpen(false)} style={{ fontWeight: '600', padding: '8px 0' }}>
+          <Link to="/compare" onClick={closeMobileMenu} style={{ fontWeight: '600', padding: '8px 0' }}>
             Compare Vendors ({compareList.length})
           </Link>
           {isAuthenticated ? (
             <>
-              <Link to="/my-event" onClick={() => setMobileMenuOpen(false)} style={{ fontWeight: '600', padding: '8px 0' }}>
+              <Link to="/my-event" onClick={closeMobileMenu} style={{ fontWeight: '600', padding: '8px 0' }}>
                 My Event Plan
               </Link>
-              <Link to={user?.role === 'VENDOR' ? '/vendor/dashboard' : '/dashboard'} onClick={() => setMobileMenuOpen(false)} style={{ fontWeight: '600', padding: '8px 0' }}>
+              <Link to={user?.role === 'VENDOR' ? '/vendor/dashboard' : '/dashboard'} onClick={closeMobileMenu} style={{ fontWeight: '600', padding: '8px 0' }}>
                 Dashboard ({user?.name})
               </Link>
-              <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="btn btn-danger btn-sm btn-block">
+              <button onClick={() => { handleLogout(); closeMobileMenu(); }} className="btn btn-danger btn-sm btn-block">
                 Logout
               </button>
             </>
           ) : (
             <div style={{ display: 'flex', gap: '10px', marginTop: '8px' }}>
-              <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="btn btn-outline btn-block">Login</Link>
-              <Link to="/register" onClick={() => setMobileMenuOpen(false)} className="btn btn-primary btn-block">Register</Link>
+              <Link to="/login" onClick={closeMobileMenu} className="btn btn-outline btn-block">Login</Link>
+              <Link to="/register" onClick={closeMobileMenu} className="btn btn-primary btn-block">Register</Link>
             </div>
           )}
         </div>
